@@ -2,7 +2,6 @@ package com.demo.controller;
 
 import com.demo.repository.UrlRepository;
 import com.demo.service.CacheService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +12,15 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 public class HealthController {
 
     private final UrlRepository urlRepository;
     private final CacheService cacheService;
+
+    public HealthController(UrlRepository urlRepository, CacheService cacheService) {
+        this.urlRepository = urlRepository;
+        this.cacheService = cacheService;
+    }
 
     @GetMapping("/health")
     public ResponseEntity<Map<String, String>> checkHealth() {

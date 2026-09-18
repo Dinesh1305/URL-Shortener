@@ -1,6 +1,5 @@
 package com.demo.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -10,7 +9,6 @@ import java.time.Duration;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class RateLimitService {
 
     private final StringRedisTemplate redisTemplate;
@@ -19,6 +17,10 @@ public class RateLimitService {
     private int maxRequestsPerMinute;
 
     private static final String RATE_LIMIT_PREFIX = "rate_limit:";
+
+    public RateLimitService(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     public boolean isAllowed(String clientIp) {
         if (clientIp == null || clientIp.isBlank()) {

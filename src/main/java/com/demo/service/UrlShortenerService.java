@@ -10,7 +10,6 @@ import com.demo.exception.UrlExpiredException;
 import com.demo.exception.UrlNotFoundException;
 import com.demo.repository.UrlRepository;
 import com.demo.util.ShortCodeGenerator;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,7 +23,6 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UrlShortenerService {
 
     private final UrlRepository urlRepository;
@@ -42,6 +40,12 @@ public class UrlShortenerService {
 
     @Value("${urlshortener.cache.ttl-minutes:60}")
     private long defaultCacheTtlMinutes;
+
+    public UrlShortenerService(UrlRepository urlRepository, CacheService cacheService, ShortCodeGenerator shortCodeGenerator) {
+        this.urlRepository = urlRepository;
+        this.cacheService = cacheService;
+        this.shortCodeGenerator = shortCodeGenerator;
+    }
 
     @Transactional
     public UrlResponse createShortUrl(CreateUrlRequest request) {

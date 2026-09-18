@@ -1,6 +1,5 @@
 package com.demo.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -10,11 +9,14 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class CacheService {
 
     private final StringRedisTemplate redisTemplate;
     private static final String KEY_PREFIX = "url:";
+
+    public CacheService(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     public Optional<String> getUrl(String shortCode) {
         try {

@@ -8,7 +8,6 @@ import com.demo.service.RateLimitService;
 import com.demo.service.UrlShortenerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,11 +18,15 @@ import java.net.URI;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 public class UrlShortenerController {
 
     private final UrlShortenerService urlShortenerService;
     private final RateLimitService rateLimitService;
+
+    public UrlShortenerController(UrlShortenerService urlShortenerService, RateLimitService rateLimitService) {
+        this.urlShortenerService = urlShortenerService;
+        this.rateLimitService = rateLimitService;
+    }
 
     @PostMapping("/api/urls")
     public ResponseEntity<UrlResponse> createShortUrl(@Valid @RequestBody CreateUrlRequest request, HttpServletRequest httpRequest) {
@@ -36,7 +39,7 @@ public class UrlShortenerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{shortCode}")
+    @GetMapping("/{shortCode:[a-zA-Z0-9_-]+}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable("shortCode") String shortCode) {
         String originalUrl = urlShortenerService.getOriginalUrlAndRedirect(shortCode);
         HttpHeaders headers = new HttpHeaders();
