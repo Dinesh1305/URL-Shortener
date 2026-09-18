@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener | High-Performance Shortener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <main class="container">
+        <header class="header">
+            <div class="logo-badge">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">URL Shortener</span>
+            </div>
+            <h1>Shorten, Share & Track URLs Instantly</h1>
+            <p class="subtitle">Powered by Spring Boot, Redis Cache & MySQL</p>
+        </header>
+
+        <!-- Notification Toast -->
+        <div id="toast" class="toast hidden"></div>
+
+        <!-- Main Shortener Form Card -->
+        <section class="card form-card">
+            <form id="shorten-form">
+                <div class="form-group">
+                    <label for="original-url">Destination URL <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🌐</span>
+                        <input type="url" id="original-url" placeholder="https://example.com/very/long/url" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="custom-alias">Custom Alias <span class="optional">(Optional)</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🏷️</span>
+                            <input type="text" id="custom-alias" placeholder="e.g. my-link" max="20" pattern="[a-zA-Z0-9_-]*">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expiration">Expiration <span class="optional">(Optional)</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">⏳</span>
+                            <select id="expiration">
+                                <option value="">Never Expire</option>
+                                <option value="15">15 Minutes</option>
+                                <option value="60">1 Hour (60 mins)</option>
+                                <option value="1440">24 Hours (1 day)</option>
+                                <option value="10080">7 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn btn-primary">
+                    <span class="btn-text">Shorten URL</span>
+                    <span class="spinner hidden"></span>
+                </button>
+            </form>
+
+            <!-- Result Box -->
+            <div id="result-box" class="result-box hidden">
+                <div class="result-header">
+                    <span class="success-badge">✓ Short Code Generated</span>
+                </div>
+                <div class="result-content">
+                    <div class="short-url-display">
+                        <input type="text" id="short-url-output" readonly>
+                        <button id="copy-btn" class="btn btn-secondary">
+                            <span class="icon">📋</span> Copy
+                        </button>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="view-stats-btn" class="btn btn-outline">📊 View Analytics</button>
+                        <button id="delete-url-btn" class="btn btn-danger">🗑️ Delete URL</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Modal / Section -->
+        <section id="stats-section" class="card stats-card hidden">
+            <div class="stats-header">
+                <h2>URL Analytics</h2>
+                <span id="stats-short-code" class="code-tag"></span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="stats-clicks">0</div>
+                    <div class="stat-label">Total Clicks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-sm" id="stats-created">--</div>
+                    <div class="stat-label">Created At</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value text-sm" id="stats-expires">--</div>
+                    <div class="stat-label">Expires At</div>
+                </div>
+            </div>
+            <div class="stats-original">
+                <span class="label">Original URL:</span>
+                <a id="stats-original-link" href="#" target="_blank" class="truncate"></a>
+            </div>
+        </section>
+
+        <!-- System Health Footer Badge -->
+        <footer class="footer">
+            <div class="health-indicator">
+                <span class="status-dot" id="health-dot"></span>
+                <span id="health-text">System: Checking...</span>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
